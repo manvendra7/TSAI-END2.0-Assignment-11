@@ -13,6 +13,9 @@
 
 ## Solution
 
+![image](https://user-images.githubusercontent.com/46154140/126875664-766f1067-792f-468e-9934-c14ba5277986.png)
+
+
 We won't be covering the data preperation steps this time as the main focus is not understand the how we actually come up with encoder, decoder classes with attention by taking baby steps.
 
 ## The Encoder Model Steps - 

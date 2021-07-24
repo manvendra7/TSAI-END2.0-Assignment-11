@@ -191,6 +191,9 @@ print(output)
 
 ## Decoder With Attention Steps
 
+![image](https://user-images.githubusercontent.com/46154140/126875536-3494a954-a810-456d-9058-c71f897f729b.png)
+
+
 * First input to the decoder will be SOS_token, later inputs would be the words it predicted (unless we implement teacher forcing)
 * decoder/LSTM's hidden state will be initialized with the encoder's last hidden state 
 * we will use lstm's hidden state and last prediction to generate attention weight using a FC layer. 

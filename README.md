@@ -17,6 +17,9 @@ We won't be covering the data preperation steps this time as the main focus is n
 
 ## The Encoder Model Steps - 
 
+![image](https://user-images.githubusercontent.com/46154140/126875601-4aeefacf-97e8-4cf5-842b-b17607b740d6.png)
+
+
 We will build our encoder with lstm. 
 
 But before building any of embedding layers or lstm layer we need to convert our text inputs and outputs into some sort of numeric values to be processed by the embedding and lstm layers.
@@ -191,7 +194,7 @@ print(output)
 
 ## Decoder With Attention Steps
 
-![image](https://user-images.githubusercontent.com/46154140/126875536-3494a954-a810-456d-9058-c71f897f729b.png)
+![image](https://user-images.githubusercontent.com/46154140/126875628-da71b010-aeb8-413c-838e-c499474340b7.png)
 
 
 * First input to the decoder will be SOS_token, later inputs would be the words it predicted (unless we implement teacher forcing)
@@ -200,6 +203,8 @@ print(output)
 * this attention weight will be used to weigh the encoder_outputs using batch matric multiplication. This will give us a NEW view on how to look at encoder_states.
 * this attention applied encoder_states will then be concatenated with the input, and then sent a linear layer and _then_ sent to the LSTM. 
 * LSTM's output will be sent to a FC layer to predict one of the output_language words
+
+![image](https://user-images.githubusercontent.com/46154140/126875536-3494a954-a810-456d-9058-c71f897f729b.png)
 
 ```python
 decoder_input = torch.tensor([[SOS_token]], device=device)

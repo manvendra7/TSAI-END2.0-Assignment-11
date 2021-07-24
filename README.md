@@ -192,7 +192,7 @@ tensor([[[ 2.4076e-01, -1.5498e-01, -1.6234e-03,  5.2397e-02,  1.9462e-04,
 * this attention applied encoder_states will then be concatenated with the input, and then sent a linear layer and _then_ sent to the LSTM. 
 * LSTM's output will be sent to a FC layer to predict one of the output_language words
 
-```
+```python
 decoder_input = torch.tensor([[SOS_token]], device=device)
 decoder_hidden = encoder_hidden
 print(encoder_hidden[0])
@@ -215,6 +215,8 @@ top_value, top_index = output.data.topk(1)
 output_lang.index2word[top_index.item()]
 ```
 ### Output for step-1 of decoder
+
+
 ```
 tensor([[[-2.1945e-01, -2.3019e-02,  9.8185e-02,  1.6685e-01, -1.2654e-02,
           -2.7083e-02,  4.2433e-02,  1.8986e-01, -1.0103e-01,  7.3739e-02,
@@ -268,10 +270,35 @@ tensor([[[-2.1945e-01, -2.3019e-02,  9.8185e-02,  1.6685e-01, -1.2654e-02,
            7.0752e-02, -2.2991e-01, -5.7096e-02,  2.9330e-02, -9.5623e-03,
           -1.0744e-02,  4.0849e-04, -9.1280e-02,  6.8897e-02, -3.2978e-02,
            1.6944e-01]]], device='cuda:0', grad_fn=<CudnnRnnBackward>)
-psyched```
+psyched
+```
 
 ### output for step-2
 ```python
+embedding = nn.Embedding(output_size, 256).to(device)
+attn_weight_layer = nn.Linear(256 * 2, 10).to(device)
+input_to_gru_layer = nn.Linear(256 * 2, 256).to(device)
+lstm =  nn.LSTM(256, 256,batch_first=True).to(device)
+output_word_layer = nn.Linear(256, output_lang.n_words).to(device)
+
+
+decoder_input = torch.tensor([[SOS_token]], device=device)
+decoder_hidden = encoder_hidden
+print(encoder_hidden[0])
+output_size = output_lang.n_words
+embedded = embedding(decoder_input)
+attn_weights = attn_weight_layer(torch.cat((embedded[0], decoder_hidden[0][0]), 1))
+attn_weights = F.softmax(attn_weights, dim = 1)
+attn_applied = torch.bmm(attn_weights.unsqueeze(0), encoder_outputs.unsqueeze(0))
+input_to_gru = input_to_gru_layer(torch.cat((embedded[0], attn_applied[0]), 1))
+input_to_gru = input_to_gru.unsqueeze(0)
+output, decoder_hidden = lstm(input_to_gru)
+output = F.relu(output)
+output = F.softmax(output_word_layer(output[0]), dim = 1)
+top_value, top_index = output.data.topk(1)
+output_lang.index2word[top_index.item()], attn_weights
+```
+```
 tensor([[[-2.1945e-01, -2.3019e-02,  9.8185e-02,  1.6685e-01, -1.2654e-02,
           -2.7083e-02,  4.2433e-02,  1.8986e-01, -1.0103e-01,  7.3739e-02,
           -3.0946e-01,  2.1215e-01, -1.5305e-01, -6.0538e-02, -2.3007e-02,

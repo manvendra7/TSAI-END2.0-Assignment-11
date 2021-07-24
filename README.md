@@ -141,7 +141,12 @@ tensor([[[ 2.4076e-01, -1.5498e-01, -1.6234e-03,  5.2397e-02,  1.9462e-04,
    ```
    
    ### encoder output for 2nd word
-  ```
+   
+ ```python
+embedded_input = embedding(input_tensor[1].view(-1, 1))
+output, hidden = lstm(embedded_input,hidden)
+print(output)
+ ```
   tensor([[[ 0.2339, -0.0017, -0.0042,  0.0524, -0.0964, -0.0559, -0.0599,
            0.0624, -0.0714, -0.0786,  0.3199, -0.1077,  0.0973,  0.0114,
           -0.1098,  0.1671, -0.0600,  0.0229, -0.0159,  0.0076, -0.1928,

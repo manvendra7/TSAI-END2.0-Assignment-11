@@ -192,7 +192,7 @@ tensor([[[ 2.4076e-01, -1.5498e-01, -1.6234e-03,  5.2397e-02,  1.9462e-04,
 * this attention applied encoder_states will then be concatenated with the input, and then sent a linear layer and _then_ sent to the LSTM. 
 * LSTM's output will be sent to a FC layer to predict one of the output_language words
 
-```python
+```
 decoder_input = torch.tensor([[SOS_token]], device=device)
 decoder_hidden = encoder_hidden
 print(encoder_hidden[0])
@@ -215,7 +215,7 @@ top_value, top_index = output.data.topk(1)
 output_lang.index2word[top_index.item()]
 ```
 ### Output for step-1 of decoder
-```python
+```
 tensor([[[-2.1945e-01, -2.3019e-02,  9.8185e-02,  1.6685e-01, -1.2654e-02,
           -2.7083e-02,  4.2433e-02,  1.8986e-01, -1.0103e-01,  7.3739e-02,
           -3.0946e-01,  2.1215e-01, -1.5305e-01, -6.0538e-02, -2.3007e-02,
